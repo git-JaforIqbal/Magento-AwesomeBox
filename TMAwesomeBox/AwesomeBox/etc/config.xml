@@ -1,0 +1,195 @@
+<?xml version="1.0"?>
+<config>
+    <modules>
+        <tmawesomeBox_awesomeBox>
+            <version>0.1.0</version>
+        </tmawesomeBox_awesomeBox>
+    </modules>
+    <global>
+        <helpers>
+          <awesomebox>
+              <class>TMAwesomeBox_AwesomeBox_Helper</class>
+          </awesomebox>
+        </helpers>
+
+        <fieldsets>
+            <customer_account>
+                <color_attribute><create>1</create><update>1</update></color_attribute>
+            </customer_account>
+        </fieldsets>
+
+        <blocks>
+            <awesomebox>
+                    <class>TMAwesomeBox_AwesomeBox_Block_AwesomeBox</class>
+            </awesomebox>
+        </blocks>
+
+        <models>
+            <awesomebox>
+                <class>TMAwesomeBox_AwesomeBox_Model_AwesomeBox</class>
+            </awesomebox>
+        </models>
+		
+		<helpers>
+            <awesomebox>
+                <class>TMAwesomeBox_AwesomeBox_Helper</class>
+            </awesomebox>  
+        </helpers>
+
+        <resources>
+            <tmawesomebox_awesomebox_setup>
+
+                <setup>
+                    <module>TMAwesomeBox_AwesomeBox</module>
+                    <class>Mage_Customer_Model_Entity_Setup</class>
+                </setup>
+
+                <setup>
+                    <module>TMAwesomeBox_AwesomeBox</module>
+                </setup>
+
+                <connection>
+                    <use>core_setup</use>
+                </connection>
+            </tmawesomebox_awesomebox_setup>
+
+            <tmawesomebox_awesomebox_write>
+                <connection>
+                    <use>core_write</use>
+                </connection>
+            </tmawesomebox_awesomebox_write>
+
+            <tmawesomebox_awesomebox_read>
+                <connection>
+                    <use>core_read</use>
+                </connection>
+            </tmawesomebox_awesomebox_read>
+        </resources>
+        <events>
+            <sales_order_save_commit_after>
+                <observers>
+                    <tmawesomebox_awesomebox>
+                        <class>TMAwesomeBox_AwesomeBox_Model_Observer</class>
+                        <method>syncOrder</method>
+                    </tmawesomebox_awesomebox>
+            </observers>
+            </sales_order_save_commit_after>
+        </events>
+    </global>
+
+    <frontend>
+        <routers>
+            <awesomebox>
+                <use>standard</use>
+                <args>
+                    <module>TMAwesomeBox_AwesomeBox</module>
+                    <frontName>awesomebox</frontName>
+                </args>
+            </awesomebox>
+        </routers>
+		<customer>
+			<args>
+				<modules>
+					<!--name / before: change existing -->
+					<awesomebox before="Mage_Customer">TMAwesomeBox_AwesomeBox</awesomebox>
+				</modules>
+			</args>
+		</customer>
+        <layout>
+            <updates>
+                <awesomebox>
+                    <file>awesomebox.xml</file>
+                </awesomebox>
+            </updates>
+        </layout>
+    </frontend>
+	
+	<admin>
+        <routers>
+            <awesomebox>
+                <use>admin</use>
+                <args>
+                    <module>TMAwesomeBox_AwesomeBox</module>
+                    <frontName>awesomebox</frontName>
+                </args>
+            </awesomebox>
+        </routers>
+    </admin>
+	
+	<adminhtml>
+        <translate>
+            <modules>
+                <awesomebox_adminhtml>
+                    <files>
+                        <awesomebox>awesomebox.csv</awesomebox>
+                    </files>
+                </awesomebox_adminhtml>
+            </modules>
+        </translate>
+        
+        <menu>
+			<awesomebox_adminform translate="title" module="awesomebox">
+				<title>Awesomebox</title>
+				<sort_order>40</sort_order> 
+				<children>
+                    <items module="awesomebox">
+                        <title>Buckets</title>
+                        <sort_order>0</sort_order>
+                        <action>awesomebox/adminhtml_awesomebox</action>
+                    </items>
+					
+                    <items1 module="awesomebox">
+                        <title>Rules</title>
+                        <sort_order>1</sort_order>
+                        <action>awesomebox/adminhtml_awesomebox/rule/section/</action>
+                    </items1>
+                </children>
+			</awesomebox_adminform>
+        </menu>
+        
+        <acl>
+            <resources>
+                <admin>
+                    <children>
+                        <awesomebox>
+                            <children>
+                                <awesomebox_awesomebox>
+                                    <title>Awesomebox</title>
+                                </awesomebox_awesomebox>
+                            </children>
+                        </awesomebox>
+                    </children>
+                </admin>
+            </resources>
+        </acl>
+        
+        <layout>
+            <updates>
+                <awesomebox>
+                    <file>awesomebox.xml</file>
+                </awesomebox>
+            </updates>
+        </layout>
+    </adminhtml>
+
+    <default>
+        <!-- 'payment' configuration section (tab) -->
+        <payment>
+            <!-- 'newmodule' configuration group (fieldset) -->
+            <awesomebox>
+                <!-- by default this payment method is inactive -->
+                <active>0</active>
+                <!-- model to handle logic for this payment method -->
+                <model>awesomebox/paymentMethod</model>
+                <!-- order status for new orders paid by this payment method -->
+                <order_status>pending</order_status>
+                <!-- default title for payment checkout page and order view page -->
+                <title>Credit Card (TMAwesomeBox)</title>
+
+                <cctypes>AE,VI,MC,DI</cctypes>
+                <payment_action>authorize</payment_action>
+                <allowspecific>0</allowspecific>
+            </awesomebox>
+        </payment>
+    </default>
+</config>
