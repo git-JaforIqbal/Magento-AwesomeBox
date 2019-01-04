@@ -146,10 +146,10 @@ class TMAwesomeBox_AwesomeBox_IndexController extends Mage_Core_Controller_Front
         if (isset($_POST['username']) && isset($_POST['password'])) {
             $email = $_POST['username'];
             $password = $_POST['password'];
-            require_once("app/Mage.php");
-            umask(0);
-            ob_start();
-            session_start();
+            //require_once("app/Mage.php");
+            //umask(0);
+            //ob_start();
+            //session_start();
             Mage::app('default');
             Mage::getSingleton("core/session", array("name" => "frontend"));
 
